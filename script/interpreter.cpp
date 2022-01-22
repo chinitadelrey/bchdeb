@@ -1122,6 +1122,62 @@ bool StepScript(ScriptExecutionEnvironment& env, CScript::const_iterator& pc, CS
                 }
                 break;
 
+                case OP_CHECKDATASIG:
+                case OP_CHECKDATASIGVERIFY: 
+                {
+                    // TODO: this needs to be audited, is copy and pasted from https://github.com/bitcoincashorg/bitcoincash.org/blob/master/spec/op_checkdatasig.md
+                     // Make sure this remains an error before activation.
+                     if ((flags & SCRIPT_ENABLE_CHECKDATASIG) == 0) {
+                         return set_error(serror, SCRIPT_ERR_BAD_OPCODE);
+                     }
+
+                        // (sig message pubkey -- bool)
+                        if (stack.size() < 3) {
+                            return set_error(
+                                serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
+                        }
+
+                        valtype &vchSig = stacktop(-3);
+                        valtype &vchMessage = stacktop(-2);
+                        valtype &vchPubKey = stacktop(-1);
+
+                        if (!CheckDataSignatureEncoding(vchSig, flags,
+                                                        serror) ||
+                            !CheckPubKeyEncoding(vchPubKey, flags, serror)) {
+                            // serror is set
+                            return false;
+                        }
+
+                        bool fSuccess = false;
+                        if (vchSig.size()) {
+                            valtype vchHash(32);
+                            CSHA256()
+                                .Write(vchMessage.data(), vchMessage.size())
+                                .Finalize(vchHash.data());
+                            uint256 message(vchHash);
+                            CPubKey pubkey(vchPubKey);
+                            fSuccess = pubkey.Verify(message, vchSig);
+                        }
+
+                        if (!fSuccess && (flags & SCRIPT_VERIFY_NULLFAIL) &&
+                            vchSig.size()) {
+                            return set_error(serror, SCRIPT_ERR_SIG_NULLFAIL);
+                        }
+
+                        popstack(stack);
+                        popstack(stack);
+                        popstack(stack);
+                        stack.push_back(fSuccess ? vchTrue : vchFalse);
+                        if (opcode == OP_CHECKDATASIGVERIFY) {
+                            if (fSuccess) {
+                                popstack(stack);
+                            } else {
+                                return set_error(serror,
+                                                 SCRIPT_ERR_CHECKDATASIGVERIFY);
+                            }
+                        }
+                    } break;
+
                 case OP_CHECKSIGADD:
                 {
                     // OP_CHECKSIGADD is only available in Tapscript

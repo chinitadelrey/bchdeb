@@ -105,6 +105,8 @@ std::string ScriptErrorString(const ScriptError serror)
             return "Invalid Schnorr signature";
         case SCRIPT_ERR_TAPROOT_WRONG_CONTROL_SIZE:
             return "Invalid Taproot control block size";
+        case SCRIPT_ERR_CHECKDATASIGVERIFY:
+            return "OP_CHECKDATASIGVERIFY failed.";
         case SCRIPT_ERR_TAPSCRIPT_VALIDATION_WEIGHT:
             return "Too much signature validation relative to witness weight";
         case SCRIPT_ERR_TAPSCRIPT_CHECKMULTISIG:
