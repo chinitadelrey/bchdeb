@@ -198,8 +198,11 @@ enum opcodetype
     OP_NOP9 = 0xb8,
     OP_NOP10 = 0xb9,
 
+    // Deprecated 
     // Opcode added by BIP 342 (Tapscript)
-    OP_CHECKSIGADD = 0xba,
+    // OP_CHECKSIGADD = 0xba,
+    
+    OP_CHECKDATASIG = 0xba,
 
     OP_INVALIDOPCODE = 0xff,
 };
