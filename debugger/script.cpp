@@ -312,17 +312,24 @@ void GetStackFeatures(opcodetype opcode, size_t &spawns, size_t &slays)
         _(1, 3);
 
     // crypto
-    case OP_RIPEMD160              :
-    case OP_SHA1                   :
-    case OP_SHA256                 :
-    case OP_HASH160                :
-    case OP_HASH256                : _(1, 1);
-    case OP_CODESEPARATOR          : _(0, 0);
-    case OP_CHECKSIG               : _(1, 2);
-    case OP_CHECKSIGVERIFY         : _(0, 2);
-    case OP_CHECKMULTISIG          : _(1, 3); // this depends on k-of-n's k and n
-    case OP_CHECKMULTISIGVERIFY    : _(0, 3); // -'-
-    case OP_CHECKSIGADD            : _(1, 3);
+    case OP_RIPEMD160:
+    case OP_SHA1:
+    case OP_SHA256:
+    case OP_HASH160:
+    case OP_HASH256:
+        _(1, 1);
+    case OP_CODESEPARATOR:
+        _(0, 0);
+    case OP_CHECKSIG:
+        _(1, 2);
+    case OP_CHECKSIGVERIFY:
+        _(0, 2);
+    case OP_CHECKMULTISIG:
+        _(1, 3); // this depends on k-of-n's k and n
+    case OP_CHECKMULTISIGVERIFY:
+        _(0, 3); // -'-
+    // case OP_CHECKSIGADD:
+    //     _(1, 3);
 
     // expansion
     case OP_NOP1:
