@@ -181,7 +181,9 @@ opcodetype GetOpCode(const char *name)
     c(NOP10);
 
     // Opcode added by BIP 342 (Tapscript)
-    c(CHECKSIGADD);
+    // c(CHECKSIGADD);
+    c(CHECKDATASIG);
+    c(CHECKDATASIGVERIFY);
 
     if (expected_opcode)
     {
