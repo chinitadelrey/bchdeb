@@ -1263,9 +1263,18 @@ bool StepScript(ScriptExecutionEnvironment &env, CScript::const_iterator &pc, CS
                     valtype &vchPubKey = stacktop(-1);
 
                     // TODO: I hope this works, copied from OP_CHECKSIG
-                    bool fSuccess = true;
-                    if (!EvalChecksig(env, vchSig, vchPubKey, pbegincodehash, pend, execdata, flags, checker, sigversion, serror, fSuccess))
+                    // bool fSuccess = true;
+                    // if (!EvalChecksig(env, vchSig, vchPubKey, pbegincodehash, pend, execdata, flags, checker, sigversion, serror, fSuccess))
+                    //     return false
+                    if (!CheckSignatureEncoding(vchSig, flags, serror) || !CheckPubKeyEncoding(vchPubKey, flags, sigversion, serror))
+                    {
+                        // serror is set
+                        btc_sign_logf("! CheckSignatureEncoding() or CheckPubKeyEncoding() failed!\n");
                         return false;
+                    }
+                    // Check signature
+                    fOk = checker.CheckECDSASignature(vchSig, vchPubKey, scriptCode, sigversion);
+                    ;
 
                     // if (!CheckDataSignatureEncoding(vchSig, flags,
                     //                                 serror) ||
@@ -1275,8 +1284,6 @@ bool StepScript(ScriptExecutionEnvironment &env, CScript::const_iterator &pc, CS
                     //     return false;
                     // }
 
-                    // Not sure why we are redefining, but ok. 
-                    fSuccess = false;
                     if (vchSig.size())
                     {
                         valtype vchHash(32);
