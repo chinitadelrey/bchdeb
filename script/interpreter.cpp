@@ -1262,7 +1262,7 @@ bool StepScript(ScriptExecutionEnvironment &env, CScript::const_iterator &pc, CS
                     valtype &vchMessage = stacktop(-2);
                     valtype &vchPubKey = stacktop(-1);
 
-                    // TODO: I hope this works, copied from OP_CHECKSIG
+                    // TODO: I hope this works, copied from OP_CHECKMULTISIG
                     // bool fSuccess = true;
                     // if (!EvalChecksig(env, vchSig, vchPubKey, pbegincodehash, pend, execdata, flags, checker, sigversion, serror, fSuccess))
                     //     return false

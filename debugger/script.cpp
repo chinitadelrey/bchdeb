@@ -324,6 +324,10 @@ void GetStackFeatures(opcodetype opcode, size_t &spawns, size_t &slays)
         _(1, 2);
     case OP_CHECKSIGVERIFY:
         _(0, 2);
+    case OP_CHECKDATASIG:
+        _(1, 3);
+    case OP_CHECKDATASIGVERIFY:
+        _(0, 3);
     case OP_CHECKMULTISIG:
         _(1, 3); // this depends on k-of-n's k and n
     case OP_CHECKMULTISIGVERIFY:
