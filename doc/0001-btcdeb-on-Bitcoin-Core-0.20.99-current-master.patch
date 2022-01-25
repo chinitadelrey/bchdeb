@@ -565,7 +565,7 @@ index 39feb4c..39417dd 100644
 -};
 -}
 -
- /** Helper for OP_CHECKSIG and OP_CHECKSIGVERIFY
+ /** Helper for OP_CHECKSIG and OP_CHECKSIGVERIFY, OP_CHECKDATASIG and OP_CHECKDATASIGVERIFY
   *
   * A return value of false means the script fails entirely. When true is returned, the
   * fSuccess variable indicates whether the signature check itself succeeded.
